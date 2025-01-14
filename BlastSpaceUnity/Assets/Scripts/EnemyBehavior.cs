@@ -16,6 +16,7 @@ public class EnemyBehavior : MonoBehaviour
         if (rb != null)
         {
             rb.gravityScale = 0;
+            rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         }
 
         GameObject enemy = this.gameObject;
