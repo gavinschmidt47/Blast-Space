@@ -24,25 +24,17 @@ public class GameController : MonoBehaviour
 
     private ParticleSystem poof;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
     // Update is called once per frame
+    private bool gameEnded = false;
+
     void Update()
     {
-        //int gameEnded = 0;
-        //while (gameEnded == 0)
-        //{
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                EndGame();
-                Count();
-                //gameEnded = 1;
-            }
-        //}
+        if (!gameEnded && Input.GetKeyDown(KeyCode.Space))
+        {
+            EndGame();
+            Count();
+            gameEnded = true;
+        }
     }
 
     void EndGame()
@@ -51,8 +43,6 @@ public class GameController : MonoBehaviour
 
         Destroy(spawner1);
         Destroy(spawner2);
-
-        Rigidbody rb;
 
         foreach (GameObject enemyClone in enemies)
         {
