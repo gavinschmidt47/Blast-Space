@@ -33,16 +33,16 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        int gameEnded = 0;
-        while (gameEnded == 0)
-        {
+        //int gameEnded = 0;
+        //while (gameEnded == 0)
+        //{
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 EndGame();
                 Count();
-                gameEnded = 1;
+                //gameEnded = 1;
             }
-        }
+        //}
     }
 
     void EndGame()
