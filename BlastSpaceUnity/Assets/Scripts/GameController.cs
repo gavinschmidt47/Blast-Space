@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : MonoBehaviour
 {
@@ -32,10 +33,15 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        int gameEnded = 0;
+        while (gameEnded == 0)
         {
-            EndGame();
-            Count();
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                EndGame();
+                Count();
+                gameEnded = 1;
+            }
         }
     }
 
@@ -60,6 +66,8 @@ public class GameController : MonoBehaviour
             animator.enabled = false;
         }
         StartCoroutine(ImpactFrame());
+
+        WaitToEnd(lastTime + iFrameTime);
     }
     void Count()
     {
@@ -71,10 +79,10 @@ public class GameController : MonoBehaviour
             {
                 poof.Play();
             }
-            StartCoroutine(lastingEnemies(enemyClone));
+            StartCoroutine(LastingEnemies(enemyClone));
         }
     }
-    IEnumerator lastingEnemies(GameObject obj)
+    IEnumerator LastingEnemies(GameObject obj)
     {
         yield return new WaitForSeconds(lastTime);
 
@@ -86,5 +94,11 @@ public class GameController : MonoBehaviour
         Camera.main.GetComponent<Camera>().SetReplacementShader(iFrameMaterial.shader, null);
         yield return new WaitForSeconds(iFrameTime);
         Camera.main.GetComponent<Camera>().ResetReplacementShader();
+    }
+    IEnumerator WaitToEnd(float time)
+    {
+        yield return new WaitForSeconds(time);
+        PlayerPrefs.SetInt("Score", numEnemy);
+        SceneManager.LoadScene("HighScoreScene");
     }
 }
