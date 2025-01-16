@@ -41,13 +41,11 @@ public class GameController : MonoBehaviour
         Destroy(spawner1);
         Destroy(spawner2);
 
-        foreach (GameObject enemy in enemies)
+        Rigidbody rb;
+
+        foreach (GameObject enemyClone in enemies)
         {
-            Rigidbody rb = enemy.GetComponent<Rigidbody>();
-            if (rb != null)
-            {
-                rb.velocity = new Vector3(0,0);
-            }
+            enemyClone.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
         }
 
         GameObject mainChar = GameObject.FindGameObjectWithTag("Player");
@@ -60,19 +58,20 @@ public class GameController : MonoBehaviour
     void Count()
     {
         numEnemy = enemies.Length;
-        foreach (GameObject enemy in enemies)
+        foreach (GameObject enemyClone in enemies)
         {
-            poof = enemy.GetComponent<ParticleSystem>();
+            poof = enemyClone.GetComponent<ParticleSystem>();
             if (poof != null)
             {
                 poof.Play();
             }
-            lastingEnemies(enemy);
+            StartCoroutine(lastingEnemies(enemyClone));
         }
     }
     IEnumerator lastingEnemies(GameObject obj)
     {
         yield return new WaitForSeconds(lastTime);
 
+        obj.GetComponent<SpriteRenderer>().enabled = false;
     }
 }
