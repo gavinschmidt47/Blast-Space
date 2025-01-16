@@ -57,7 +57,7 @@ public class GameController : MonoBehaviour
         }
         StartCoroutine(ImpactFrame());
 
-        WaitToEnd(lastTime + iFrameTime);
+        StartCoroutine(WaitToEnd(lastTime + iFrameTime));
     }
     void Count()
     {
