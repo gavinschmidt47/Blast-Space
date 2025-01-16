@@ -16,7 +16,12 @@ public class GameController : MonoBehaviour
     [SerializeField] 
     private int lastTime = 2;
 
-    public ParticleSystem poof;
+    [SerializeField]
+    private float iFrameTime = 0.5f;
+
+    public Material iFrameMaterial;
+
+    private ParticleSystem poof;
 
     // Start is called before the first frame update
     void Start()
@@ -54,6 +59,7 @@ public class GameController : MonoBehaviour
         {
             animator.enabled = false;
         }
+        StartCoroutine(ImpactFrame());
     }
     void Count()
     {
@@ -73,5 +79,12 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(lastTime);
 
         obj.GetComponent<SpriteRenderer>().enabled = false;
+    }
+
+    IEnumerator ImpactFrame()
+    {
+        Camera.main.GetComponent<Camera>().SetReplacementShader(iFrameMaterial.shader, null);
+        yield return new WaitForSeconds(iFrameTime);
+        Camera.main.GetComponent<Camera>().ResetReplacementShader();
     }
 }
