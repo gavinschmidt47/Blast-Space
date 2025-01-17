@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameController : MonoBehaviour
 {
@@ -26,18 +27,32 @@ public class GameController : MonoBehaviour
 
     private bool gameEnded = false;
 
+    public Slider timerSlider;
+
+    private float timeRemaining = 10f;
+
+    public AudioSource sound;
+
+    public AudioSource music;
+
     void Start()
     {
         StartCoroutine(TimeLimit());
+        timerSlider.maxValue = timeRemaining;
+        timerSlider.value = timeRemaining;
     }
 
     void Update()
     {
+        timeRemaining -= Time.deltaTime;
+        timerSlider.value = timeRemaining;
         if (!gameEnded && Input.GetKeyDown(KeyCode.Space))
         {
             EndGame();
             Count();
             gameEnded = true;
+            music.Stop();
+            sound.Play();
         }
     }
 
