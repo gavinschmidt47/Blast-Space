@@ -24,8 +24,12 @@ public class GameController : MonoBehaviour
 
     private ParticleSystem poof;
 
-    // Update is called once per frame
     private bool gameEnded = false;
+
+    void Start()
+    {
+        StartCoroutine(TimeLimit());
+    }
 
     void Update()
     {
@@ -59,6 +63,7 @@ public class GameController : MonoBehaviour
 
         StartCoroutine(WaitToEnd(lastTime + iFrameTime));
     }
+
     void Count()
     {
         numEnemy = enemies.Length;
@@ -72,6 +77,7 @@ public class GameController : MonoBehaviour
             StartCoroutine(LastingEnemies(enemyClone));
         }
     }
+
     IEnumerator LastingEnemies(GameObject obj)
     {
         yield return new WaitForSeconds(lastTime);
@@ -85,10 +91,20 @@ public class GameController : MonoBehaviour
         yield return new WaitForSeconds(iFrameTime);
         Camera.main.GetComponent<Camera>().ResetReplacementShader();
     }
+
     IEnumerator WaitToEnd(float time)
     {
         yield return new WaitForSeconds(time);
         PlayerPrefs.SetInt("Score", numEnemy);
         SceneManager.LoadScene("HighScoreScene");
+    }
+
+    IEnumerator TimeLimit()
+    {   
+        yield return new WaitForSeconds(10f);
+        if (!gameEnded)
+        {
+            SceneManager.LoadScene("LoseScene");
+        }
     }
 }
